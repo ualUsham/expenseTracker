@@ -10,7 +10,7 @@ const Approver = () => {
   const [selectedTeam, setSelectedTeam] = useState("");
   const [showViewModal, setShowViewModal] = useState(false);
   const [selectedExpense, setSelectedExpense] = useState(null);//to track selected expense
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const team = sessionStorage.getItem("team");

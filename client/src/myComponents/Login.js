@@ -50,7 +50,7 @@ const Login = () => {
   // Handle the team selection and Navigate
   const handleConfirm = async () => {
     sessionStorage.setItem('team', selectedTeam); //useful for next route
-    sessionStorage.setItem('role', selectedRole); //useful for next route
+    
     try {
       const resp = await axios.get("https://expensetracker-7uaa.onrender.com/check-role", {
         params: { user: auth.currentUser.uid },
@@ -59,7 +59,7 @@ const Login = () => {
       const userRoles = resp.data.roles;
       const selectedRole = userRoles.find((role) => role.team === selectedTeam);
       sessionStorage.setItem('role', selectedRole); //useful for next route
-      
+
       if (selectedRole) {
         if (selectedRole.role === "approver") {
           navigate("/approver");

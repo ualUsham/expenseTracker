@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Member = () => {
     const [selectedTeam, setSelectedTeam] = useState("");
@@ -14,7 +15,8 @@ const Member = () => {
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [selectedExpense, setSelectedExpense] = useState(null);//to track selected expense
     const [updatedExpense, setUpdatedExpense] = useState({});//to store expenses to be updated
-
+    const navigate = useNavigate();
+    
     useEffect(() => {
         const team = sessionStorage.getItem('team');
         setSelectedTeam(team);
