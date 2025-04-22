@@ -13,29 +13,41 @@ const Approver = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const team = sessionStorage.getItem("team");
-    setSelectedTeam(team);
-    
-    //if Member, redirect to Login
-    const myRole = sessionStorage.getItem("role");
-    if(myRole==="member"){navigate("/login")}
+    const fetchData = async () => {
+      const team = sessionStorage.getItem("team");
+      setSelectedTeam(team);
 
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user && team) {
-        try {//get expenses of all members first
-          const res = await axios.get("https://expensetracker-7uaa.onrender.com/getTeamExpenses", { params: { team } });
-          setExpenses(res.data);
-        } catch (err) {
-          toast.error("Failed to fetch team expenses", {
-            position: "top-center",
-          });
-        }
+      const myRole = sessionStorage.getItem("role");
+      if (myRole === "member") {
+        toast.error("You are not a part of this team !!");
+        await new Promise((res) => setTimeout(res, 1500)); // 1.5 sec delay
+        navigate("/login"); // Redirect to login
+        return; // Early exit after redirection
       }
-    });
 
-    return () => unsubscribe();
-  }, []);
+      const auth = getAuth();
+      const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        if (user && team) {
+          try {
+            // Get expenses of all members for the team
+            const res = await axios.get(
+              "https://expensetracker-7uaa.onrender.com/getTeamExpenses",
+              { params: { team } }
+            );
+            setExpenses(res.data);
+          } catch (err) {
+            toast.error("Failed to fetch team expenses", {
+              position: "top-center",
+            });
+          }
+        }
+      });
+
+      return () => unsubscribe(); // Cleanup on unmount
+    };
+
+    fetchData();
+  }, [navigate]);
 
   //View Expense Button
   const handleView = (expense) => {
@@ -108,6 +120,7 @@ const Approver = () => {
                 <div>
                   <p className="mb-1"> <span className={`badge text-capitalize ${exp.status === "approved" ? "bg-success" : exp.status === "rejected" ? "bg-danger" : "bg-warning text-white"}`}>{exp.status}</span></p>
                   <p className="fw-bold border rounded-3 p-2 text-capitalize fs-4 mt-3">{exp.description} </p>
+                  <p className="fw-bold border border-1 rounded-3 p-2 text-wrap text-capitalize fs-5 bg-white">Rs {exp.amount} </p>
                   <p className="fw-bold border rounded-2 px-2 text-secondary">By <span className="text-primary">{exp.mail}</span></p>
                 </div>
 

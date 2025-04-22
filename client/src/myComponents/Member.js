@@ -16,28 +16,40 @@ const Member = () => {
     const [selectedExpense, setSelectedExpense] = useState(null);//to track selected expense
     const [updatedExpense, setUpdatedExpense] = useState({});//to store expenses to be updated
     const navigate = useNavigate();
-    
+
     useEffect(() => {
-        const team = sessionStorage.getItem('team');
-        setSelectedTeam(team);
-        //if Approver, redirect to Login
-        const myRole = sessionStorage.getItem("role");
-        if (myRole === "approver") { navigate("/login") }
+        const fetchData = async () => {
+            const team = sessionStorage.getItem('team');
+            setSelectedTeam(team);
 
-        const auth = getAuth();
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            if (user && team) {
-                try {//get expenses of this member 
-                    const res = await axios.get("https://expensetracker-7uaa.onrender.com/getMemExpenses", { params: { uid: user.uid, team } });
-                    setExpenses(res.data);
-                } catch (err) {
-                    toast.error("Failed to fetch expenses", { position: "top-center" });
-                }
+            //Do not allow Approver role
+            const myRole = sessionStorage.getItem('role');
+            if (myRole === 'approver') {
+                toast.error('You are not a part of this team !!');
+                await new Promise((res) => setTimeout(res, 1500)); // 1.5 sec delay
+                navigate('/');  
+                return; 
             }
-        });
 
-        return () => unsubscribe();
-    }, [expenses]);
+            const auth = getAuth();
+            const unsubscribe = onAuthStateChanged(auth, async (user) => {
+                if (user && team) {
+                    try {
+                        // Fetch expenses of this member
+                        const res = await axios.get('https://expensetracker-7uaa.onrender.com/getMemExpenses', { params: { uid: user.uid, team } });
+                        setExpenses(res.data);
+                    } catch (err) {
+                        toast.error('Failed to fetch expenses', { position: 'top-center' });
+                    }
+                }
+            });
+
+            // Cleanup function for unsubscribe
+            return () => unsubscribe();
+        };
+
+        fetchData();
+    }, [navigate]);
 
     //Add Expense Button
     const handleAddExpense = async () => {
@@ -125,6 +137,7 @@ const Member = () => {
                                 <div>
                                     <p className="mb-3"> <span className={`badge text-capitalize ${exp.status === "approved" ? "bg-success" : exp.status === "rejected" ? "bg-danger" : "bg-warning text-white"}`}>{exp.status}</span></p>
                                     <p className="fw-bold border border-1 rounded-3 p-2 text-wrap text-capitalize fs-5 bg-white">{exp.description} </p>
+                                    <p className="fw-bold border border-1 rounded-3 p-2 text-wrap text-capitalize fs-5 bg-white">Rs {exp.amount} </p>
                                 </div>
 
                                 <div className="p-3 d-flex justify-content-end flex-wrap">
