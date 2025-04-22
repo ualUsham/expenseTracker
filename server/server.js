@@ -162,18 +162,20 @@ app.get("/myteams", async (req, res) => {
     try {
         const { user } = req.query;
 
-        const userDoc = await db.collection("users").findOne({ uid: user });
+        const foundUser = await User.findOne({ uid: user }, "role");
 
-        if (!userDoc || !userDoc.roles) {
+        if (!foundUser || !foundUser.role) {
             return res.status(404).json({ teams: [] });
         }
 
-        const teams = userDoc.roles.map(roleObj => roleObj.team);
-        res.json({ teams });
-    } catch (error) {
-        res.status(500).json({ error: "Internal Server Error" });
+        const teams = foundUser.role.map(r => r.team);
+
+        res.status(200).json({ teams });
+    } catch (err) {
+        res.status(500).json({ error: "Failed to fetch user teams" });
     }
 });
+
 
 //Check unique email
 app.get("/check-email", async (req, res) => {
