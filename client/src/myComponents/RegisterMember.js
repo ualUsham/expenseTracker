@@ -52,6 +52,7 @@ const RegisterMember = () => {
           return;
         }
 
+        sessionStorage.setItem("team", selectTeam);// useful for next route
         sessionStorage.setItem("role", "member");// useful for next route
         navigate("/member");
         return;
@@ -86,6 +87,9 @@ const RegisterMember = () => {
 
               toast.success(res.data.message || "Registration successful", { position: "top-center" });
               await new Promise((res) => setTimeout(res, 2000));
+              
+              sessionStorage.setItem("team", selectTeam);// useful for next route
+              sessionStorage.setItem("role", "member");// useful for next route
               navigate("/member");
 
             } catch (err) {
