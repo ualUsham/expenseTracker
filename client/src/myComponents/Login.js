@@ -15,6 +15,9 @@ const Login = () => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
+  //if already login, go to member/approve page
+
+  
   // Login
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,7 +61,7 @@ const Login = () => {
 
       const userRoles = resp.data.roles;
       const selectedRole = userRoles.find((role) => role.team === selectedTeam);
-      sessionStorage.setItem('role', selectedRole); //useful for next route
+      sessionStorage.setItem('role', selectedRole.role); //useful for next route
 
       if (selectedRole) {
         if (selectedRole.role === "approver") {

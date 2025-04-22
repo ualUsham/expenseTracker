@@ -120,7 +120,7 @@ const Approver = () => {
                 <div>
                   <p className="mb-1"> <span className={`badge text-capitalize ${exp.status === "approved" ? "bg-success" : exp.status === "rejected" ? "bg-danger" : "bg-warning text-white"}`}>{exp.status}</span></p>
                   <p className="fw-bold border rounded-3 p-2 text-capitalize fs-4 mt-3">{exp.description} </p>
-                  <p className="fw-bold border border-1 rounded-3 p-2 text-wrap text-capitalize fs-5 bg-white">Rs {exp.amount} </p>
+                  <p className="fst-italic border border-1 rounded-3 px-2 py-1 text secondary text-capitalize fs-5 bg-white">{'\u20B9'} {exp.amount} </p>
                   <p className="fw-bold border rounded-2 px-2 text-secondary">By <span className="text-primary">{exp.mail}</span></p>
                 </div>
 
