@@ -94,9 +94,13 @@ const Member = () => {
     const handleSaveUpdate = async () => {
 
         try {
-            const res = await axios.put('https://expensetracker-7uaa.onrender.com/updateExpenses', updatedExpense); //i m returning updated expense back
+            await axios.put('https://expensetracker-7uaa.onrender.com/updateExpenses', updatedExpense); 
             toast.success("Expense Updated Successfully!!", { position: "top-center" });
-            setExpenses(expenses => [...expenses, res.data]);
+            
+            const auth = getAuth();
+            const user = auth.currentUser;
+            const res = await axios.get('https://expensetracker-7uaa.onrender.com/getMemExpenses', { params: { uid: user.uid, selectedTeam } });
+            setExpenses(res.data);
             setShowUpdateModal(false);
 
         } catch (err) {
