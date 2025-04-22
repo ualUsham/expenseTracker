@@ -137,7 +137,7 @@ const Member = () => {
                                 <div>
                                     <p className="mb-3"> <span className={`badge text-capitalize ${exp.status === "approved" ? "bg-success" : exp.status === "rejected" ? "bg-danger" : "bg-warning text-white"}`}>{exp.status}</span></p>
                                     <p className="fw-bold border border-1 rounded-3 p-2 text-wrap text-capitalize fs-5 bg-white">{exp.description} </p>
-                                    <p className="fw-bold border border-1 rounded-3 p-2 text-wrap text-capitalize fs-5 bg-white">Rs {exp.amount} </p>
+                                    <p className="fw-semibold border border-1 rounded-3 p-1 text secondary text-capitalize fs-5 bg-white">Rs {exp.amount} </p>
                                 </div>
 
                                 <div className="p-3 d-flex justify-content-end flex-wrap">
