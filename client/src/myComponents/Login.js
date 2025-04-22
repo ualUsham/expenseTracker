@@ -41,10 +41,11 @@ const Login = () => {
     setLoading(true);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const user = await signInWithEmailAndPassword(auth, email, password);
+      const uid = user.uid;
 
       // Fetch user teams
-      const resp = await axios.get("https://expensetracker-7uaa.onrender.com/myteams", { params: { user: auth.currentUser.uid } });
+      const resp = await axios.get("https://expensetracker-7uaa.onrender.com/myteams", { params: { user : uid } });
       setTeams(resp.data.teams);
       setShowModal(true);
 

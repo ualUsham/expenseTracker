@@ -161,16 +161,10 @@ app.get("/teams", async (req, res) => {
 app.get("/myteams", async (req, res) => {
     try {
         const { user } = req.query;
-
-        const foundUser = await User.findOne({ uid: user }, "role");
-
-        if (!foundUser || !foundUser.role) {
-            return res.status(404).json({ teams: [] });
-        }
-
-        const teams = foundUser.role.map(r => r.team);
-
+        const foundUser = await User.findOne({ uid: user }, "roles");
+        const teams = foundUser.roles.map(r => r.team);
         res.status(200).json({ teams });
+
     } catch (err) {
         res.status(500).json({ error: "Failed to fetch user teams" });
     }
