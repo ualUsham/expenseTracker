@@ -25,13 +25,13 @@ mongoose
     .then(() => console.log("MongoDB connected"))
     .catch((err) => console.error("MongoDB connection error:", err));
 
-app.get("/",async (req,res) => {
+app.get("/", async (req, res) => {
     try {
-        return res.status(200).json({message: "All OK" });
+        return res.status(200).json({ message: "All OK" });
     } catch (error) {
         return res.status(500).json(error);
     }
-    
+
 })
 
 //Registration
@@ -56,10 +56,10 @@ app.post("/register", async (req, res) => {
 
             if (teamExists) {
                 return res.status(400).json({ error: `You are already registered as ${teamExists.role} in this team.` });
-            }else{
-            // Add new team and role
-            user.roles.push({ team, role });
-        }
+            } else {
+                // Add new team and role
+                user.roles.push({ team, role });
+            }
         }
 
         await user.save();
@@ -85,18 +85,18 @@ app.get("/getMemExpenses", async (req, res) => {
 //Get All expenses of a Team
 app.get("/getTeamExpenses", async (req, res) => {
     const { team } = req.query;
-  
+
     try {
-      const expenses = await Expense.find({ team });
-      res.json(expenses);
+        const expenses = await Expense.find({ team });
+        res.json(expenses);
     } catch (err) {
-      res.status(500).json({ error: "Internal Server Error" });
+        res.status(500).json({ error: "Internal Server Error" });
     }
-  });
+});
 
 // Add new expense
 app.post("/newExpenses", async (req, res) => {
-    const { uid, mail,team, description, amount, remarks } = req.body;
+    const { uid, mail, team, description, amount, remarks } = req.body;
 
     try {
         const expense = new Expense({
@@ -142,7 +142,7 @@ app.put("/updateExpenses", async (req, res) => {
 });
 
 
-//Fetch teams (i need fetching all teams & checking also)
+//Fetch all teams 
 app.get("/teams", async (req, res) => {
     try {
         const users = await User.find({}, "roles");
@@ -154,6 +154,24 @@ app.get("/teams", async (req, res) => {
         res.status(200).json(allTeams);
     } catch (err) {
         res.status(500).json({ error: "Failed to fetch teams from MongoDB" });
+    }
+});
+
+//fetch user teams only
+app.get("/myteams", async (req, res) => {
+    try {
+        const { user } = req.query;
+
+        const userDoc = await db.collection("users").findOne({ uid: user });
+
+        if (!userDoc || !userDoc.roles) {
+            return res.status(404).json({ teams: [] });
+        }
+
+        const teams = userDoc.roles.map(roleObj => roleObj.team);
+        res.json({ teams });
+    } catch (error) {
+        res.status(500).json({ error: "Internal Server Error" });
     }
 });
 

@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { auth } from './firebase';
@@ -17,37 +17,23 @@ const Login = () => {
 
   //if Already login, go to member/approve page
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        try {
-          const resp = await axios.get("https://expensetracker-7uaa.onrender.com/check-role", {
-            params: { user: user.uid },
-          });
+        const role = sessionStorage.getItem('role');
+        const team = sessionStorage.getItem('team');
 
-          const userRoles = resp.data.roles;
-          const savedTeam = sessionStorage.getItem('team') || (userRoles[0] && userRoles[0].team);
-          const selectedRole = userRoles.find((role) => role.team === savedTeam);
-
-          if (selectedRole) {
-            sessionStorage.setItem('team', savedTeam);
-            sessionStorage.setItem('role', selectedRole.role);
-
-            if (selectedRole.role === "approver") {
-              navigate("/approver");
-            } else if (selectedRole.role === "member") {
-              navigate("/member");
-            }
+        if (role && team) {
+          if (role === "approver") {
+            navigate("/approver");
+          } else if (role === "member") {
+            navigate("/member");
           }
-        } catch (error) {
-          console.error("Auto-login failed:", error.message);
         }
       }
     });
 
-    return () => unsubscribe(); // cleanup
-
+    return () => unsubscribe();
   }, [navigate]);
-
 
   // Login
   const handleSubmit = async (e) => {
@@ -57,9 +43,9 @@ const Login = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
 
-      // Fetch all teams
-      const resp = await axios.get("https://expensetracker-7uaa.onrender.com/teams");
-      setTeams(resp.data);
+      // Fetch user teams
+      const resp = await axios.get("https://expensetracker-7uaa.onrender.com/myteams", { params: { user: auth.currentUser.uid } });
+      setTeams(resp.data.teams);
       setShowModal(true);
 
     } catch (error) {
@@ -91,18 +77,15 @@ const Login = () => {
       });
 
       const userRoles = resp.data.roles;
-      const selectedRole = userRoles.find((role) => role.team === selectedTeam);
+      const selectedRole = userRoles.find((role) => role.team === selectedTeam); //finding role of this team
       sessionStorage.setItem('role', selectedRole.role); //useful for next route
 
-      if (selectedRole) {//part of team
-        if (selectedRole.role === "approver") {
-          navigate("/approver");
-        } else if (selectedRole.role === "member") {
-          navigate("/member");
-        }
-      }else{//not part of team
-        toast.error("Not part of this team",{position:"top-center"});
+      if (selectedRole.role === "approver") {
+        navigate("/approver");
+      } else if (selectedRole.role === "member") {
+        navigate("/member");
       }
+
     } catch (error) {
       toast.error("Error checking user role: " + error.message);
     }
