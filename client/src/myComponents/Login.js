@@ -15,9 +15,40 @@ const Login = () => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  //if already login, go to member/approve page
+  //if Already login, go to member/approve page
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        try {
+          const resp = await axios.get("https://expensetracker-7uaa.onrender.com/check-role", {
+            params: { user: user.uid },
+          });
 
-  
+          const userRoles = resp.data.roles;
+          const savedTeam = sessionStorage.getItem('team') || (userRoles[0] && userRoles[0].team);
+          const selectedRole = userRoles.find((role) => role.team === savedTeam);
+
+          if (selectedRole) {
+            sessionStorage.setItem('team', savedTeam);
+            sessionStorage.setItem('role', selectedRole.role);
+
+            if (selectedRole.role === "approver") {
+              navigate("/approver");
+            } else if (selectedRole.role === "member") {
+              navigate("/member");
+            }
+          }
+        } catch (error) {
+          console.error("Auto-login failed:", error.message);
+        }
+      }
+    });
+
+    return () => unsubscribe(); // cleanup
+
+  }, [navigate]);
+
+
   // Login
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,7 +60,7 @@ const Login = () => {
       // Fetch all teams
       const resp = await axios.get("https://expensetracker-7uaa.onrender.com/teams");
       setTeams(resp.data);
-      setShowModal(true); 
+      setShowModal(true);
 
     } catch (error) {
       toast.error("Login failed!! Try again later", { position: "top-center" });
@@ -37,7 +68,7 @@ const Login = () => {
     } finally {
       setLoading(false);
     }
-  }; 
+  };
 
   // Password Reset
   const handlePasswordChange = async () => {
@@ -53,7 +84,7 @@ const Login = () => {
   // Handle the team selection and Navigate
   const handleConfirm = async () => {
     sessionStorage.setItem('team', selectedTeam); //useful for next route
-    
+
     try {
       const resp = await axios.get("https://expensetracker-7uaa.onrender.com/check-role", {
         params: { user: auth.currentUser.uid },
@@ -63,12 +94,14 @@ const Login = () => {
       const selectedRole = userRoles.find((role) => role.team === selectedTeam);
       sessionStorage.setItem('role', selectedRole.role); //useful for next route
 
-      if (selectedRole) {
+      if (selectedRole) {//part of team
         if (selectedRole.role === "approver") {
           navigate("/approver");
         } else if (selectedRole.role === "member") {
           navigate("/member");
         }
+      }else{//not part of team
+        toast.error("Not part of this team",{position:"top-center"});
       }
     } catch (error) {
       toast.error("Error checking user role: " + error.message);

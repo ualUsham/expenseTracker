@@ -135,7 +135,7 @@ app.put("/updateExpenses", async (req, res) => {
         if (!updatedExpense) {
             return res.status(404).json({ error: "Expense not found" });
         }
-        res.json(updatedExpense);
+        res.json(updatedExpense);//return back to update UI as well
     } catch (err) {
         res.status(500).json({ error: "Internal Server Error" });
     }
