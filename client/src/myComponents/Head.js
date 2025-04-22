@@ -7,9 +7,12 @@ const Head = () => {
     const navigate = useNavigate();
 
     const handleLogout = async () => {
-        await auth.signOut();
-        sessionStorage.clear();
-        navigate("/");
+        const confirmLogout = window.confirm("Are you sure you want to logout?");
+        if (confirmLogout) {
+            await auth.signOut();
+            sessionStorage.clear();
+            navigate("/");
+        }
     };
 
     return (
@@ -23,7 +26,7 @@ const Head = () => {
 
                     {(location.pathname === "/member" || location.pathname === "/approver") && (
                         <button onClick={handleLogout} className="btn btn-link text-secondary position-absolute top-50 start-0 translate-middle-y mt-4 ps-5" style={{ marginLeft: "60px", textDecoration: 'none' }}>
-                            <i class="fa-solid fa-power-off fs-5"></i> Logout
+                            <i class="fa-solid fa-power-off fs-5 me-1"></i> Logout
                         </button>
                     )}
 
