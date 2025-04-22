@@ -3,16 +3,22 @@ import axios from "axios";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const Approver = () => {
   const [expenses, setExpenses] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState("");
   const [showViewModal, setShowViewModal] = useState(false);
   const [selectedExpense, setSelectedExpense] = useState(null);//to track selected expense
+  const navigate = useNavigate()
 
   useEffect(() => {
     const team = sessionStorage.getItem("team");
     setSelectedTeam(team);
+    
+    //if Member, redirect to Login
+    const myRole = sessionStorage.getItem("role");
+    if(myRole==="member"){navigate("/login")}
 
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, async (user) => {

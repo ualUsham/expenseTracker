@@ -18,6 +18,9 @@ const Member = () => {
     useEffect(() => {
         const team = sessionStorage.getItem('team');
         setSelectedTeam(team);
+        //if Approver, redirect to Login
+        const myRole = sessionStorage.getItem("role");
+        if (myRole === "approver") { navigate("/login") }
 
         const auth = getAuth();
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -106,7 +109,7 @@ const Member = () => {
             </div>
 
             {/*Display Expenses */}
-            <div className="container mt-4 d-flex flex-column flex-wrap" style={{maxWidth:"800px"}}>
+            <div className="container mt-4 d-flex flex-column flex-wrap" style={{ maxWidth: "800px" }}>
                 <hr /><hr /><hr />
                 <h5 className="fw-bold mb-3 text-center">My Expenses</h5>
 

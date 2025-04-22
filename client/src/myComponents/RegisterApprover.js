@@ -83,7 +83,8 @@ const RegisterApprover = () => {
               await deleteUser(user);//delete user if backend fails storing 
               return;
             }
-
+            
+            sessionStorage.setItem("role", "approver");// useful for next route
             navigate("/approver");
             return;
           }

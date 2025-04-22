@@ -52,6 +52,7 @@ const RegisterMember = () => {
           return;
         }
 
+        sessionStorage.setItem("role", "member");// useful for next route
         navigate("/member");
         return;
       }
