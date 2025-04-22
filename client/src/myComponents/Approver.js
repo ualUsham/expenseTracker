@@ -18,7 +18,7 @@ const Approver = () => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user && team) {
         try {//get expenses of all members first
-          const res = await axios.get("http://localhost:5000/getTeamExpenses", { params: { team } });
+          const res = await axios.get("https://expensetracker-7uaa.onrender.com/getTeamExpenses", { params: { team } });
           setExpenses(res.data);
         } catch (err) {
           toast.error("Failed to fetch team expenses", {
@@ -42,7 +42,7 @@ const Approver = () => {
 
     try {
       const approvedExpense = { ...expense, status: 'approved' }
-      const res = await axios.put('http://localhost:5000/updateExpenses', approvedExpense);
+      const res = await axios.put('https://expensetracker-7uaa.onrender.com/updateExpenses', approvedExpense);
       toast.success("Expense Approved Successfully !!", { position: "top-center" });
       setExpenses(prev => prev.map(e => e._id === res.data._id ? res.data : e)); //update status at UI
 
@@ -55,7 +55,7 @@ const Approver = () => {
   const handleReject = async (expense) => {
     try {
       const rejectedExpense = { ...expense, status: 'rejected' }
-      const res = await axios.put('http://localhost:5000/updateExpenses', rejectedExpense);
+      const res = await axios.put('https://expensetracker-7uaa.onrender.com/updateExpenses', rejectedExpense);
       toast.success("Expense Rejected Successfully !!", { position: "top-center" });
       setExpenses(prev => prev.map(e => e._id === res.data._id ? res.data : e)); //update status at UI
 
@@ -68,7 +68,7 @@ const Approver = () => {
   const handlePending = async (expense) => {
     try {
       const pendingExpense = { ...expense, status: 'pending' }
-      const res = await axios.put('http://localhost:5000/updateExpenses', pendingExpense);
+      const res = await axios.put('https://expensetracker-7uaa.onrender.com/updateExpenses', pendingExpense);
       toast.success("Expense in Pending !!", { position: "top-center" });
       setExpenses(prev => prev.map(e => e._id === res.data._id ? res.data : e)); //update status at UI
 

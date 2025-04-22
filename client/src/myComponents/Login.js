@@ -24,7 +24,7 @@ const Login = () => {
       await signInWithEmailAndPassword(auth, email, password);
 
       // Fetch all teams
-      const resp = await axios.get("http://localhost:5000/teams");
+      const resp = await axios.get("https://expensetracker-7uaa.onrender.com/teams");
       setTeams(resp.data);
       setShowModal(true); 
 
@@ -52,7 +52,7 @@ const Login = () => {
     sessionStorage.setItem('team', selectedTeam); //useful for next route
     
     try {
-      const resp = await axios.get("http://localhost:5000/check-role", {
+      const resp = await axios.get("https://expensetracker-7uaa.onrender.com/check-role", {
         params: { user: auth.currentUser.uid },
       });
 

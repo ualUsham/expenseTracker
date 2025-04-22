@@ -18,7 +18,7 @@ const RegisterMember = () => {
   useEffect(() => {
     const fetchTeams = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/teams");
+        const res = await axios.get("https://expensetracker-7uaa.onrender.com/teams");
         setTeams(res.data);
       } catch (err) {
         toast.error("Failed to load teams. Try again later!!", { position: "top-center" });
@@ -33,13 +33,13 @@ const RegisterMember = () => {
 
     try {
       //Check if email exists, then bypass Firebase signup (team is being checked backend)
-      const resp = await axios.get("http://localhost:5000/check-email", { params: { email } });
+      const resp = await axios.get("https://expensetracker-7uaa.onrender.com/check-email", { params: { email } });
       if (resp.data.exists) {
         //login and get uid
         const { user } = await signInWithEmailAndPassword(auth, email, password);
         //create Member of new team
         try {
-          await axios.post("http://localhost:5000/register", {
+          await axios.post("https://expensetracker-7uaa.onrender.com/register", {
             email: user.email,
             name: name,
             uid: user.uid,
@@ -75,7 +75,7 @@ const RegisterMember = () => {
 
             //store at backend
             try {
-              const res = await axios.post("http://localhost:5000/register", {
+              const res = await axios.post("https://expensetracker-7uaa.onrender.com/register", {
                 email: user.email,
                 name: name,
                 uid: user.uid,

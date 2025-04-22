@@ -8,7 +8,7 @@ const Expense = require("./models/Expense"); //mongodb collection
 const app = express();
 app.use(
     cors({
-        origin: "http://localhost:3000",
+        origin: "https://expense-tracker-gamma-roan-29.vercel.app",
         methods: ["GET", "POST", "PUT", "DELETE"],
         credentials: true,
     })
@@ -24,6 +24,15 @@ mongoose
     })
     .then(() => console.log("MongoDB connected"))
     .catch((err) => console.error("MongoDB connection error:", err));
+
+app.get("/",async (req,res) => {
+    try {
+        return res.status(200).json({message: "All OK" });
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+    
+})
 
 //Registration
 app.post("/register", async (req, res) => {

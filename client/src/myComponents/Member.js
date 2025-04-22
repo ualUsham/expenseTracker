@@ -23,7 +23,7 @@ const Member = () => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user && team) {
                 try {//get expenses of this member 
-                    const res = await axios.get("http://localhost:5000/getMemExpenses", { params: { uid: user.uid, team } });
+                    const res = await axios.get("https://expensetracker-7uaa.onrender.com/getMemExpenses", { params: { uid: user.uid, team } });
                     setExpenses(res.data);
                 } catch (err) {
                     toast.error("Failed to fetch expenses", { position: "top-center" });
@@ -49,7 +49,7 @@ const Member = () => {
         };
 
         try {
-            const res = await axios.post("http://localhost:5000/newExpenses", expenseToSubmit); //i am returning new expenses again
+            const res = await axios.post("https://expensetracker-7uaa.onrender.com/newExpenses", expenseToSubmit); //i am returning new expenses again
             toast.success("Expense Added Successfully!!", { position: "top-center" });
             setShowAddModal(false);
             setNewExpense(initialExpenseState);
@@ -77,7 +77,7 @@ const Member = () => {
     const handleSaveUpdate = async () => {
 
         try {
-            const res = await axios.put('http://localhost:5000/updateExpenses', updatedExpense); //i m returning updated expense back
+            const res = await axios.put('https://expensetracker-7uaa.onrender.com/updateExpenses', updatedExpense); //i m returning updated expense back
             toast.success("Expense Updated Successfully!!", { position: "top-center" });
             setExpenses(expenses => [...expenses, res.data]);
             setShowUpdateModal(false);

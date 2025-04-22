@@ -19,7 +19,7 @@ const RegisterApprover = () => {
 
     try {
       // Check if team exists
-      const res = await axios.get("http://localhost:5000/teams");
+      const res = await axios.get("https://expensetracker-7uaa.onrender.com/teams");
       const existingTeams = res.data;
       const exists = existingTeams.includes(teamName);
       if (exists) {
@@ -29,13 +29,13 @@ const RegisterApprover = () => {
       }
 
       //Check if email exists, then bypass Firebase signup
-      const resp = await axios.get("http://localhost:5000/check-email", { params: { email } });
+      const resp = await axios.get("https://expensetracker-7uaa.onrender.com/check-email", { params: { email } });
       if (resp.data.exists) {
         //login and get uid
         const { user } = await signInWithEmailAndPassword(auth, email, password);
         //create Approver of new team
         try {
-          await axios.post("http://localhost:5000/register", {
+          await axios.post("https://expensetracker-7uaa.onrender.com/register", {
             email: user.email,
             name: approverName,
             uid: user.uid,
@@ -71,7 +71,7 @@ const RegisterApprover = () => {
             await new Promise((resolve) => setTimeout(resolve, 3000));
             //Send to backend to store in database
             try {
-              await axios.post("http://localhost:5000/register", {
+              await axios.post("https://expensetracker-7uaa.onrender.com/register", {
                 email: user.email,
                 name: approverName,
                 uid: user.uid,
