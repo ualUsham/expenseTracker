@@ -32,9 +32,8 @@
 
 .bckgrnd {
   background: 
-    url('/public/bg.jpg'),
-    black; 
+    url('/public/bg.jpg'); 
   background-size: cover;
   background-position: center;
-  background-blend-mode: multiply;
+  
 }
