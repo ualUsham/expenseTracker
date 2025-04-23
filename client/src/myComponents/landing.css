@@ -32,7 +32,7 @@
 
 .bckgrnd {
   background: 
-    url('/client/public/bg.jpg'),
+    url('/public/bg.jpg'),
     black; 
   background-size: cover;
   background-position: center;
