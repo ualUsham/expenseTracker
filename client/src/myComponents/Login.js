@@ -45,7 +45,7 @@ const Login = () => {
       const uid = userCredential.user.uid;
 
       // Fetch user teams
-      const resp = await axios.get("http://localhost:5000/myteams", { params: { uid: uid } });
+      const resp = await axios.get("https://expensetracker-7uaa.onrender.com/myteams", { params: { uid: uid } });
       setTeams(resp.data.teams);
       setShowModal(true);
 
@@ -74,7 +74,7 @@ const Login = () => {
     sessionStorage.setItem('team', selectedTeam); //useful for next route
 
     try {
-      const resp = await axios.get("http://localhost:5000/check-role", {
+      const resp = await axios.get("https://expensetracker-7uaa.onrender.com/check-role", {
         params: { user: auth.currentUser.uid },
       });
 
