@@ -13,6 +13,27 @@ const RegisterApprover = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  //if Already login, go to member/approve page
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        const role = sessionStorage.getItem('role');
+        const team = sessionStorage.getItem('team');
+
+        if (role && team) {
+          if (role === "approver") {
+            navigate("/approver");
+          } else if (role === "member") {
+            navigate("/member");
+          }
+        }
+      }
+    });
+
+    return () => unsubscribe();
+  }, [navigate]);
+
+  //Registration process
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -31,7 +52,6 @@ const RegisterApprover = () => {
       //Check if email exists, then bypass Firebase signup
       const resp = await axios.get("https://expensetracker-7uaa.onrender.com/check-email", { params: { email } });
       if (resp.data.exists) {
-        //logout current user first before creating a new one
 
         //login and get uid
         const { user } = await signInWithEmailAndPassword(auth, email, password);
@@ -45,7 +65,7 @@ const RegisterApprover = () => {
             role: "approver",
           });
         } catch (error) {
-          toast.error("Failed registration and storing",{position: "top-center"});
+          toast.error("Failed registration and storing", { position: "top-center" });
           await new Promise((resolve) => setTimeout(resolve, 3000));
           return;
         }
@@ -57,9 +77,6 @@ const RegisterApprover = () => {
       }
 
       //Create New User
-        //logout current user first before creating a new one
-
-
       const { user } = await createUserWithEmailAndPassword(auth, email, password);
 
       if (user) {
@@ -148,7 +165,7 @@ const RegisterApprover = () => {
 
         <div>* If you have registered already, please <Link to='/login' style={{ textDecoration: 'none' }}>Login</Link> here.</div>
         <div>* Want to Check Out this App ?? <Link to='/about' style={{ textDecoration: 'none' }}>Read Guidelines</Link></div>
-        </form>
+      </form>
     </div>
   );
 };

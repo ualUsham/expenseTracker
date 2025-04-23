@@ -14,8 +14,27 @@ const RegisterMember = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Fetch available teams to display to member
+
   useEffect(() => {
+    //if Already login, go to member/approve page
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        const role = sessionStorage.getItem('role');
+        const team = sessionStorage.getItem('team');
+
+        if (role && team) {
+          if (role === "approver") {
+            navigate("/approver");
+          } else if (role === "member") {
+            navigate("/member");
+          }
+        }
+      }
+    });
+
+    unsubscribe();
+
+    // Fetch available teams to display to member
     const fetchTeams = async () => {
       try {
         const res = await axios.get("https://expensetracker-7uaa.onrender.com/teams");
@@ -27,6 +46,7 @@ const RegisterMember = () => {
     fetchTeams();
   }, []);
 
+
   //Registration process
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,8 +56,7 @@ const RegisterMember = () => {
       //Check if email exists, then bypass Firebase signup (team is being checked backend)
       const resp = await axios.get("https://expensetracker-7uaa.onrender.com/check-email", { params: { email } });
       if (resp.data.exists) {
-        //logout current user first before creating a new one
-        
+
         //login and get uid
         const { user } = await signInWithEmailAndPassword(auth, email, password);
         //create Member of new team
@@ -62,7 +81,6 @@ const RegisterMember = () => {
       }
 
       //Create New User
-        //logout current user first before creating a new one
       const { user } = await createUserWithEmailAndPassword(auth, email, password);
 
       if (user) {
@@ -91,7 +109,7 @@ const RegisterMember = () => {
 
               toast.success(res.data.message || "Registration successful", { position: "top-center" });
               await new Promise((res) => setTimeout(res, 2000));
-              
+
               sessionStorage.setItem("team", selectTeam);// useful for next route
               sessionStorage.setItem("role", "member");// useful for next route
               navigate("/member");
