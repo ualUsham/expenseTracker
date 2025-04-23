@@ -4,23 +4,45 @@ import './landing.css';
 
 const Landing = () => {
     const [showModal, setShowModal] = useState(false);
-    const navigate =useNavigate();
+    const navigate = useNavigate();
 
     const handleRoleSelection = (role) => {
         navigate(`/register${role}`);
     };
+
+    const handleGetStarted = () => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user) {//already login
+                const role = sessionStorage.getItem('role');
+                const team = sessionStorage.getItem('team');
+
+                if (role && team) {
+                    if (role === "approver") {
+                        navigate("/approver");
+                    } else if (role === "member") {
+                        navigate("/member");
+                    }
+                }
+            } else {// not login
+                setShowModal(true);
+            }
+
+            unsubscribe();
+        });
+    };
+
 
     return (
         <div className="container-fluid d-flex flex-column align-items-center justify-content-center">
             <i className="fa-solid fa-money-check-dollar mt-4"></i>
 
             <div className="container text-center mt-5">
-                <h1 className="display-4 fw-bold mb-4 ">Track Your Expenses <br />With <span style={{ color: '#0d6efd' }}>Ease</span></h1>
+                <h1 className="display-4 fw-bold mb-4 ">Track Your Expenses <br />With <span style={{ color: '#20c997' }}>Ease</span></h1>
                 <p className="lead mb-4 text-secondary fw-normal">Submit, Approve and Manage Expenses effortlessly with our simple and secure platform.</p>
 
                 <div className="d-flex justify-content-center gap-3 flex-wrap my-5">
                     <Link to="/login" className="btn btn-primary btn-lg shadow">Login</Link>
-                    <button className="btn btn-outline-primary btn-lg border-2 shadow" onClick={() => setShowModal(true)}>Get Started</button>
+                    <button className="btn btn-outline-primary btn-lg border-2 shadow" onClick={handleGetStarted}>Get Started</button>
                 </div>
             </div>
 
@@ -44,7 +66,7 @@ const Landing = () => {
                     </div>
                 </div>
             )}
-            
+
         </div>
     );
 };
