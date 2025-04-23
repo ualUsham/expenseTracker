@@ -41,21 +41,22 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const user = await signInWithEmailAndPassword(auth, email, password);
-      const uid = user.uid;
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const uid = userCredential.user.uid;
 
       // Fetch user teams
-      const resp = await axios.get("https://expensetracker-7uaa.onrender.com/myteams", { params: { user : uid } });
+      const resp = await axios.get("http://localhost:5000/myteams", { params: { uid: uid } });
       setTeams(resp.data.teams);
       setShowModal(true);
 
     } catch (error) {
-      toast.error("Login failed!! Try again later", { position: "top-center" });
+      toast.error(`Login failed!! Try again later: ${error.message}`, { position: "top-center" });
       setPassword("");
     } finally {
       setLoading(false);
     }
   };
+
 
   // Password Reset
   const handlePasswordChange = async () => {
@@ -73,7 +74,7 @@ const Login = () => {
     sessionStorage.setItem('team', selectedTeam); //useful for next route
 
     try {
-      const resp = await axios.get("https://expensetracker-7uaa.onrender.com/check-role", {
+      const resp = await axios.get("http://localhost:5000/check-role", {
         params: { user: auth.currentUser.uid },
       });
 

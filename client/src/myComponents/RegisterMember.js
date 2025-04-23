@@ -27,6 +27,7 @@ const RegisterMember = () => {
     fetchTeams();
   }, []);
 
+  //Registration process
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -35,6 +36,8 @@ const RegisterMember = () => {
       //Check if email exists, then bypass Firebase signup (team is being checked backend)
       const resp = await axios.get("https://expensetracker-7uaa.onrender.com/check-email", { params: { email } });
       if (resp.data.exists) {
+        //logout current user first before creating a new one
+        
         //login and get uid
         const { user } = await signInWithEmailAndPassword(auth, email, password);
         //create Member of new team
@@ -59,6 +62,7 @@ const RegisterMember = () => {
       }
 
       //Create New User
+        //logout current user first before creating a new one
       const { user } = await createUserWithEmailAndPassword(auth, email, password);
 
       if (user) {

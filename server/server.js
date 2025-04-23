@@ -6,6 +6,7 @@ const User = require("./models/User"); //mongodb collection
 const Expense = require("./models/Expense"); //mongodb collection
 
 const app = express();
+
 app.use(
     cors({
         origin: "https://expense-tracker-gamma-roan-29.vercel.app",
@@ -13,6 +14,8 @@ app.use(
         credentials: true,
     })
 );
+
+// app.use(cors({ origin: "http://localhost:3000",methods: ["GET", "POST", "PUT", "DELETE"], }));
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
@@ -96,7 +99,7 @@ app.get("/getTeamExpenses", async (req, res) => {
 
 // Add new expense
 app.post("/newExpenses", async (req, res) => {
-    const { uid, mail, team, description, amount, remarks } = req.body;
+    const { uid, mail, team, description, amount, createdAt,updatedAt, remarks, status } = req.body;
 
     try {
         const expense = new Expense({
@@ -105,7 +108,10 @@ app.post("/newExpenses", async (req, res) => {
             team,
             description,
             amount,
+            createdAt,
+            updatedAt,
             remarks,
+            status,            
         });
 
         await expense.save();
@@ -160,17 +166,18 @@ app.get("/teams", async (req, res) => {
 //fetch user teams only
 app.get("/myteams", async (req, res) => {
     try {
-        const { user } = req.query;
-        const foundUser = await User.findOne({ uid: user }, "roles");
+        const { uid } = req.query;
+        const foundUser = await User.findOne({ uid: uid }, "roles");
         const teams = foundUser.roles.map(r => r.team);
         res.status(200).json({ teams });
 
     } catch (err) {
+        console.log(err);
         res.status(500).json({ error: "Failed to fetch user teams" });
     }
 });
 
-
+ 
 //Check unique email
 app.get("/check-email", async (req, res) => {
     const { email } = req.query;
@@ -202,6 +209,19 @@ app.get("/check-role", async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: "Failed to fetch user roles" });
     }
+});
+
+// delete Expense
+app.delete('/deleteExpense', async (req, res) => {
+  const { _id } = req.body;
+
+  try {
+    const deletedExpense = await Expense.findByIdAndDelete(_id);
+    res.status(200).json({ message: 'Expense deleted successfully',deletedExpense });
+
+  } catch (err) {
+    res.status(500).json({ error: 'Internal server error. Failed to delete' });
+  }
 });
 
 

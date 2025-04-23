@@ -25,8 +25,8 @@ const Head = () => {
                     <Link to="/" className='text-secondary position-absolute top-50 start-0 translate-middle-y mt-4 ps-3 ' style={{ textDecoration: 'none' }} >Home</Link>
 
                     {(location.pathname === "/member" || location.pathname === "/approver") && (
-                        <button onClick={handleLogout} className="btn btn-link text-secondary position-absolute top-50 start-0 translate-middle-y mt-4 ps-5" style={{ marginLeft: "60px", textDecoration: 'none' }}>
-                            <i class="fa-solid fa-power-off fs-5 me-1"></i> Logout
+                        <button onClick={handleLogout} className="btn btn-link text-danger position-absolute top-50 start-0 translate-middle-y mt-4 ps-5" style={{ marginLeft: "60px", textDecoration: 'none' }}>
+                            <i class="fa-solid fa-power-off"></i> Logout
                         </button>
                     )}
 
