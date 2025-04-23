@@ -34,7 +34,7 @@ const Landing = () => {
 
 
     return (
-        <div className="container-fluid d-flex flex-column align-items-center justify-content-center">
+        <div className="container-fluid d-flex flex-column align-items-center justify-content-center bckgrnd">
             <i className="fa-solid fa-money-check-dollar mt-4"></i>
 
             <div className="container text-center mt-5">

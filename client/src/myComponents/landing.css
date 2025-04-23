@@ -1,15 +1,40 @@
 .fa-money-check-dollar {
-    font-size: 180px !important;
-    color: #20c997;
-    animation: ring 3s ease-in-out infinite;
+  font-size: 180px !important;
+  color: #20c997;
+  animation: ring 3s ease-in-out infinite;
+}
+
+@keyframes ring {
+  0% {
+    transform: rotate(0);
   }
-  
-  @keyframes ring {
-    0% { transform: rotate(0); }
-    60% { transform: rotate(0); }
-    70% { transform: rotate(-15deg); }
-    80% { transform: rotate(15deg); }
-    90% { transform: rotate(-15deg);}
-    100% { transform: rotate(0);}
+
+  60% {
+    transform: rotate(0);
   }
-  
+
+  70% {
+    transform: rotate(-15deg);
+  }
+
+  80% {
+    transform: rotate(15deg);
+  }
+
+  90% {
+    transform: rotate(-15deg);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
+}
+
+.bckgrnd {
+  background: 
+    url('/client/public/bg.jpg'),
+    black; 
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: multiply;
+}
