@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import './landing.css';
+import { auth } from './firebase';
 
 const Landing = () => {
     const [showModal, setShowModal] = useState(false);
