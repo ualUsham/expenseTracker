@@ -13,11 +13,15 @@ const Approver = () => {
   const navigate = useNavigate();
   const [filterStatus, setFilterStatus] = useState('');
   const [totalAmount, setTotalAmount] = useState(0);
-  const [userEmail,setUserEmail] = useState();
+  const [userEmail, setUserEmail] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
       const team = sessionStorage.getItem("team");
+      if (!team) {
+        navigate('/');
+        return;
+      }
       setSelectedTeam(team);
 
       const myRole = sessionStorage.getItem("role");
@@ -32,7 +36,7 @@ const Approver = () => {
       const auth = getAuth();
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
         if (user && team) {
-          setUserEmail(()=> user.email);
+          setUserEmail(() => user.email);
           try {
             //incase filter is there
             if (filterStatus) {
@@ -165,14 +169,14 @@ const Approver = () => {
   }, [filterStatus, selectedTeam]);
 
   //calculate total expenses wrt expenses update
-      useEffect(() => {
-          let sum = 0;
-          for (let i = 0; i < expenses.length; i++) {
-              const amount = parseFloat(expenses[i].amount); //convert to proper number
-              sum += amount;
-          }
-          setTotalAmount(sum);
-      }, [expenses]);
+  useEffect(() => {
+    let sum = 0;
+    for (let i = 0; i < expenses.length; i++) {
+      const amount = parseFloat(expenses[i].amount); //convert to proper number
+      sum += amount;
+    }
+    setTotalAmount(sum);
+  }, [expenses]);
 
   return (
     <div className="d-flex flex-column align-items-center">
@@ -181,11 +185,11 @@ const Approver = () => {
       <div className="text-center fst-italic p-2 mb-2 mt-4 border-2 border-bottom ">
         < h4 >Team - <span className="text-primary fw-bold ">{selectedTeam}</span></h4 >
       </div >
-      
+
       <h5 className="text-primary fw-semi-bold border rounded-3 py-2 px-3 my-3">{userEmail}</h5>
 
       <div className="text-center text-bg-primary shadow fw-bold my-4 p-2 fs-5 rounded-3">You are the Approver !!</div>
-      
+
       <div className="container mt-2 d-flex flex-column flex-wrap" style={{ maxWidth: "800px" }}>
         <hr /><hr /><hr />
         <h4 className="fw-bold mb-3 text-center">Team Expenses</h4>

@@ -19,11 +19,15 @@ const Member = () => {
     const navigate = useNavigate();
     const [filterStatus, setFilterStatus] = useState('');
     const [totalAmount, setTotalAmount] = useState(0);
-    const [userEmail,setUserEmail] = useState();
+    const [userEmail, setUserEmail] = useState();
 
     useEffect(() => {
         const fetchData = async () => {
             const team = sessionStorage.getItem('team');
+            if (!team) {
+                navigate('/');
+                return;
+            }
             setSelectedTeam(team);
 
             //Do not allow Approver role
@@ -38,7 +42,7 @@ const Member = () => {
             const auth = getAuth();
             const unsubscribe = onAuthStateChanged(auth, async (user) => {
                 if (user && team) {
-                    setUserEmail(()=> user.email);
+                    setUserEmail(() => user.email);
                     try {
                         //incase filter is there filter it instead of fetching all
                         if (filterStatus) {
