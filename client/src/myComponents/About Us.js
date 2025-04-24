@@ -7,7 +7,7 @@ const AboutUs = () => {
             <div className="text-center mb-4 position-relative">
                 <h1 className="fw-bold mt-2">About Us</h1>
                 <p className="lead my-5">
-                    Welcome to <span className="fw-bold">Expense</span><span className="text-primary fw-bold">Tracker !!</span>
+                    Welcome to <span className="fw-bold">Team</span><span className="text-primary fw-bold">Xpense !!</span>
                     <br />
                     Our goal is to help individuals and teams effortlessly track, manage and review their expenses.
                     <br />
