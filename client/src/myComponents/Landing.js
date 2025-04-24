@@ -38,7 +38,7 @@ const Landing = () => {
             <i className="fa-solid fa-money-check-dollar mt-4"></i>
 
             <div className="container text-center mt-5">
-                <h1 className="display-4 fw-bold mb-4 ">Track Your Expenses <br />With <span style={{ color: '#20c997' }}>Ease</span></h1>
+                <h1 className="display-4 fw-bold mb-4 ">Manage Your Expenses <br />With <span style={{ color: '#20c997' }}>Ease</span></h1>
                 <p className="lead mb-4 text-secondary fw-normal">Submit, Approve and Manage Expenses effortlessly with our simple and secure platform.</p>
 
                 <div className="d-flex justify-content-center gap-3 flex-wrap my-5">
