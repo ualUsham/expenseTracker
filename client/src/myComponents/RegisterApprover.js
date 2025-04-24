@@ -137,7 +137,7 @@ const RegisterApprover = () => {
       <form className="border rounded-3 m-3 mt-5 p-3 position-relative" onSubmit={handleSubmit} style={{ minWidth: "315px" }}>
 
         <ToastContainer />
-        <div className="position-absolute top-0 start-50 translate-middle-x fs-3 fw-bold text-nowrap mt-2" style={{ whiteSpace: "nowrap" }}>Register as <span style={{ color: '#0d6efd' }}>Approver</span></div>
+        <div className="position-absolute top-0 start-50 translate-middle-x fs-3 fw-bold text-nowrap mt-2" style={{ whiteSpace: "nowrap" }}>Register as <span style={{ color: '#20c997' }}>Approver</span></div>
         <br />
         <div className="mt-5">
           <label className="form-label fs-5">Team Name</label>
