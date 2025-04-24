@@ -29,3 +29,6 @@
     transform: rotate(0);
   }
 }
+.bgd{
+  background-image: url(/public/bg.png);
+}
