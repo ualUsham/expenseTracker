@@ -31,4 +31,7 @@
 }
 .bgd{
   background-image: url(/public/bg.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
