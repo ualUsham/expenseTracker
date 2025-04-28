@@ -253,7 +253,7 @@ const Approver = () => {
                 <p><strong>Amount:</strong> ₹{selectedExpense.amount}</p>
                 <p><strong>Status:</strong> {selectedExpense.status}</p>
                 <p><strong>Created:</strong> {new Date(selectedExpense.createdAt).toLocaleDateString()}</p>
-                <p><strong>Updated:</strong> {new Date(selectedExpense.updatedAt).toLocaleString()}</p>
+                <p><strong>Updated:</strong> {new Date(selectedExpense.updatedAt).toLocaleDateString()}</p>
                 <p><strong>Remarks:</strong> {selectedExpense.remarks}</p>
               </div>
 
