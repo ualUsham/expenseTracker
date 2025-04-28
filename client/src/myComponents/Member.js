@@ -345,9 +345,7 @@ const Member = () => {
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">Created At</label>
-                                <input type="datetime-local" className="form-control"
-                                    value={newExpense.createdAt ? new Date(newExpense.createdAt).toLocaleString('sv-SE').slice(0, 16) : ""}
-                                    onChange={(e) => handleInputChange(setNewExpense, "createdAt", e.target.value)} />
+                                <input type="date" className="form-control" value={newExpense.createdAt ? newExpense.createdAt.slice(0, 10) : new Date().toISOString().slice(0, 10)} onChange={(e) => handleInputChange(setNewExpense, "createdAt", e.target.value)}/>
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">Remarks (Optional)</label>
